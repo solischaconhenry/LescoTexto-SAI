@@ -19,14 +19,13 @@ and open the template in the editor.
             $f2 = './img/b.png';
             
             $im = imagecreatefrompng($f1);
-            $im2 = imagecreatefrompng($f2);
 
-            if($im && imagefilter($im, IMG_FILTER_GRAYSCALE) && ($im2 && imagefilter($im2, IMG_FILTER_GRAYSCALE)))
+            if($im && imagefilter($im, IMG_FILTER_GRAYSCALE))
             {
                 echo 'Imagen convertida a escala de grises.';
 
                 imagepng($im, $f1); //convierte la imagen y la asigna a la imagen enviada
-                imagepng($im2, $f2); //convierte la imagen y la asigna a la imagen enviada
+               
 
               
             }
@@ -36,7 +35,7 @@ and open the template in the editor.
             }
 
             imagedestroy($im);
-            imagedestroy($im2);
+           
 
 
             
