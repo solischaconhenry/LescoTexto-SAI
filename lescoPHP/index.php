@@ -65,9 +65,6 @@ and open the template in the editor.
                                     echo 'Imagen convertida a escala de grises.'."<br><br>";
 
                                     imagepng($im, $f1); //convierte la imagen y la asigna a la imagen enviada
-
-
-
                                 }
                                 else
                                 {
@@ -75,10 +72,6 @@ and open the template in the editor.
                                 }
 
                                 imagedestroy($im);
-
-
-
-
 
                                 $hash       = $comparador->getHash_img('./img/mina.jpg');
                                 //echo $hash;
