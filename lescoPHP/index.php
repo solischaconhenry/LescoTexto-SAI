@@ -18,6 +18,9 @@ and open the template in the editor.
         </form>
         <?php
             include 'comparer.php';
+
+             echo ('Hola Esteban esto es una prueba para probar lo que estamos probando.');
+            $comparador = new comparadorImg(8);
             
             $imgArray = [
                 "a" =>  "a.png",
@@ -97,12 +100,6 @@ and open the template in the editor.
                     echo "archivo no permitido, es tipo de archivo prohibido o excede el tamano de $limite_kb Kilobytes";
                 }
             }
-
-            
-            
-           
-            
-           
         ?>
     </body>
 </html>
