@@ -12,7 +12,7 @@ and open the template in the editor.
     <body>
         <?php
             include 'comparer.php';
-
+             echo ('Hola Esteban esto es una prueba para probar lo que estamos probando.');
             $comparador = new comparadorImg(8);
             
             $f1 = './img/a.png';
