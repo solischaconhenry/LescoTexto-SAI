@@ -14,9 +14,8 @@ window.addEventListener("DOMContentLoaded", function () {
     //image.src = canvas.toDataURL("image/png");
     
     
-    
-    var enviar = ReImg.fromCanvas(canvas).toBase64(); // Convertir a base 64
-	
+    var enviar = ReImg.fromCanvas(canvas).toBase64(); // Convertir a base 64    
+  
     var array = new Array();
     array[0]= enviar;
     var msg = JSON.encode(array);
@@ -55,3 +54,16 @@ window.addEventListener("DOMContentLoaded", function () {
 	}
 }, false);
 
+function toDataUrl(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.send();
+}

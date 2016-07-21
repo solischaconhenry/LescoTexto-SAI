@@ -10,21 +10,17 @@ if($_POST){
    
    //ahora muestro algún dato de este array bidimiesional
    $imagenBase64 = explode(',', $misDatosJSON[0]);
-   //$image = base64_to_png($imagenBase64, 'imagen.png');
-   $salida = "";
-   $salida .= "<br>Imagen: " . $imagenBase64[1];
-   echo $salida;
+   $Base64Img = base64_decode($imagenBase64[1]);
+//escribimos la información obtenida en un archivo llamado 
+//unodepiera.png para que se cree la imagen correctamente
+file_put_contents('webcam.png', $Base64Img); 
+echo "<img src='webcam.png' alt='webcam' />";
+//echo "alert($imagenBase64[1])";
+   //$salida = "";
+   //$salida .= "<br>Imagen: " . $imagenBase64[1];
+   //echo $salida;
 }else{
    echo "No recibí datos por POST";
-}
-
-function base64_to_png($base64_string, $output_file) {
-    $ifp = fopen($output_file, "wb"); 
-
-    fwrite($ifp, base64_decode($data[1])); 
-    fclose($ifp); 
-
-    return $output_file; 
 }
 
 ?>
