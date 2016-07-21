@@ -9,7 +9,7 @@ window.addEventListener("DOMContentLoaded", function () {
 		};
 
     document.getElementById("btnCaptura").addEventListener("click", function() {
-	context.drawImage(video, 0, 0, 640, 480);
+	context.drawImage(video, 0, 0, 300, 300);
     //var image = new Image();
     //image.src = canvas.toDataURL("image/png");
     
@@ -30,7 +30,7 @@ window.addEventListener("DOMContentLoaded", function () {
     onFailure: function(){
       $('resultado').set("html", "fallo en la conexión Ajax");
     }
-    })
+    });
     mensaje.send();
     //ReImg.fromCanvas(canvas).downloadPng();
     });

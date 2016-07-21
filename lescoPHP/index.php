@@ -11,6 +11,13 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Lesco-Text</title>
         
+        <link rel="stylesheet" href="CSS/css.css" type="text/css">
+        
+        <!--Import for camera option-->
+        <script src="JS/window.js"></script>
+        <script src="JS/MooTools-Core-1.6.0.js" type="text/javascript"></script>
+        <script src="JS/ReImg.js"></script>
+        
          <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
@@ -24,7 +31,7 @@ and open the template in the editor.
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
     </head>
-    <body>
+    <body class="body">
         <div class="navbar-wrapper">
             <div class="container-fluid">
 
@@ -52,7 +59,8 @@ and open the template in the editor.
             </div>
         </div>
         
-        <div id="chapter">
+        
+        <div id="demo">
         <!-- FIN Navbar-->
         <?php
         include 'comparer.php';
@@ -63,11 +71,10 @@ and open the template in the editor.
         $imgArray = [
             //"h" =>  "Henry.png",
             //"e" =>  "Esteban.png",
-            "a" =>  "Carlos.png",
+            //"a" =>  "Carlos.png",
             "o" =>  "O-Carlos.png",
             "o1" =>  "O-Henry.png",
             "o2" =>  "O-Esteban.png",
-            "h" =>  "a3WEB.png"
             /*"o" =>  "a1.png",
             "o1" =>  "a1W.png",
             "o2" =>  "a1WEB.png",
@@ -80,57 +87,64 @@ and open the template in the editor.
             "o4" =>  "o.png"*/
         ];
         
-        function blackWhite($image1){
-            $f1 = $image1;
-
-            $im = imagecreatefrompng($f1);
-
-            if ($im && imagefilter($im, IMG_FILTER_GRAYSCALE)) {
-                echo 'Imagen convertida a escala de grises.' . "<br><br>";
-
-                imagepng($im, $f1); //convierte la imagen y la asigna a la imagen enviada
-            } else {
-                echo 'La conversión a escala de grises falló.';
-            }
-
-            imagedestroy($im);
-        }
-
+       
         foreach ($imgArray as $i => $valor) {
             //echo $imgArray[$i] ." - ".$valor." - ".$i.'<br>';
             $f1 = "./img/O-Henry.png";
             //$f2 = "./img/a1w.png";
             $f2 = "./img/".$valor;
             
-            //blackWhite($f1);
-            //blackWhite($f2);
           
             $hash = $comparador->getHash_img($f1);
             //echo $hash;
             $dif = $comparador->comparar_imgs($f1, $f2);
             
-            echo "<div class = 'row'>";
+            /*echo "<div class = 'row'>";
             echo "<img class = 'col-md-4' width='400' height='300' src='" . $f1 . "'>";
             echo "<img class = 'col-md-4' width='400' height='300' src='" . $f2 . "'><br><br>";
             echo "</div>";
             echo "<b>Diferencias</b> " . $dif . "%<br>";
-            echo "<b>Similitudes</b> " . (100 - $dif) . "%<br>";
-            
-           
-            
+            echo "<b>Similitudes</b> " . (100 - $dif) . "%<br>";*/
             if((100 - $dif) >= 50){
-                 $palabra .= $i;
-                
-                echo "<b>Letra: </b>".$palabra.'<br>';
-                //break;
-                
-            }
+                  $palabra .= $i;
 
-            
+                
+                 break;
+            }
         }
-       
-        
             ?>
+        <div class="row" style="margin-top: 20px;">
+            <div class="container">
+                <div class="row">
+                    <h3 class="col-md-5">Captura</h3>
+                    <div class="col-md-1"></div>
+                    <h3 class="col-md-5">Traducción</h3>
+                </div>
+                
+                <div class="col-md-5 translateboxes">
+                    <div style="margin-left: 10%;"> 
+                        <video class="center" id="video" width="300" height="300" autoplay></video>
+                        <br>
+                        <button  class="btn btn-info"id="btnCaptura">Capturar</button>
+                        <br>
+                        <br>
+                        <canvas id="canvas" width="300" height="300"></canvas>
+                        <br>
+                        <div id="resultado"></div>
+                        
+                    </div>
+                   
+                </div>
+                
+                <div class="col-md-1"></div>
+               
+                <div class="col-md-5 translateboxes" style="height: auto">
+                    <?php                                
+                                echo '<p>'.$palabra.'</p>';
+                    ?>
+                </div>
+            </div>
+        </div>
         </div>
     </body>
 <html>
