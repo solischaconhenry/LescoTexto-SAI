@@ -10,15 +10,15 @@ and open the template in the editor.
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Lesco-Text</title>
-        
+
         <link rel="stylesheet" href="CSS/css.css" type="text/css">
-        
+
         <!--Import for camera option-->
         <script src="JS/window.js"></script>
         <script src="JS/MooTools-Core-1.6.0.js" type="text/javascript"></script>
         <script src="JS/ReImg.js"></script>
-        
-         <!-- jQuery library -->
+
+        <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
 
         <!-- Latest compiled and minified CSS -->
@@ -32,6 +32,9 @@ and open the template in the editor.
 
     </head>
     <body class="body">
+        <?php
+        $palabra = "";
+        ?>
         <div class="navbar-wrapper">
             <div class="container-fluid">
 
@@ -58,93 +61,135 @@ and open the template in the editor.
 
             </div>
         </div>
-        
-        
+
+
+
+
         <div id="demo">
-        <!-- FIN Navbar-->
-        <?php
-        include 'comparer.php';
 
-        $comparador = new comparadorImg(8);
-        $palabra = "";
 
-        $imgArray = [
-            //"h" =>  "Henry.png",
-            //"e" =>  "Esteban.png",
-            //"a" =>  "Carlos.png",
-            "o" =>  "O-Carlos.png",
-            "o1" =>  "O-Henry.png",
-            "o2" =>  "O-Esteban.png",
-            /*"o" =>  "a1.png",
-            "o1" =>  "a1W.png",
-            "o2" =>  "a1WEB.png",
-            "a2" =>  "a2.png",
-            "a3" =>  "a2WEB.png",
-            "h" =>  "a3.png",
-            "h1" =>  "a3WEB.png",
-            "o3" =>  "a4.png",
-            "h1" =>  "h.png",
-            "o4" =>  "o.png"*/
-        ];
-        
-       
-        foreach ($imgArray as $i => $valor) {
-            //echo $imgArray[$i] ." - ".$valor." - ".$i.'<br>';
-            $f1 = "./img/O-Henry.png";
-            //$f2 = "./img/a1w.png";
-            $f2 = "./img/".$valor;
+
+            <!-- FIN Navbar-->
+            <?php
+            include 'comparer.php';
+            //include './analize.php';
             
-          
-            $hash = $comparador->getHash_img($f1);
-            //echo $hash;
-            $dif = $comparador->comparar_imgs($f1, $f2);
-            
-            /*echo "<div class = 'row'>";
-            echo "<img class = 'col-md-4' width='400' height='300' src='" . $f1 . "'>";
-            echo "<img class = 'col-md-4' width='400' height='300' src='" . $f2 . "'><br><br>";
-            echo "</div>";
-            echo "<b>Diferencias</b> " . $dif . "%<br>";
-            echo "<b>Similitudes</b> " . (100 - $dif) . "%<br>";*/
-            if((100 - $dif) >= 50){
-                  $palabra .= $i;
+            error_reporting(E_ERROR | E_WARNING | E_PARSE);
+            $comparador = new comparadorImg(8);
 
-                
-                 break;
+
+            $imgArray = [
+                "o" => "O-Carlos.png",
+                "o1" => "O-Henry.png",
+                "o2" => "O-Esteban.png",
+            ];
+
+           
+
+            # definimos la carpeta destino
+            $carpetaDestino = "img/";
+
+            # si hay algun archivo que subir
+            if ($_FILES["archivo"]["name"][0]) {
+
+                # recorremos todos los arhivos que se han subido
+                for ($i = 0; $i < count($_FILES["archivo"]["name"]); $i++) {
+
+                    # si es un formato de imagen (PNG)
+                    if ($_FILES["archivo"]["type"][$i] == "image/png") {
+
+                        # si exsite la carpeta o se ha creado
+                        if (file_exists($carpetaDestino) || @mkdir($carpetaDestino)) {
+                            $origen = $_FILES["archivo"]["tmp_name"][$i];
+                            $destino = $carpetaDestino . $_FILES["archivo"]["name"][$i];
+
+                            # movemos el archivo
+                            if (@move_uploaded_file($origen, $destino)) {
+                                echo "<br>" . $_FILES["archivo"]["name"][$i] . " movido correctamente";
+                                comparacion($_FILES["archivo"]["name"][$i]);
+                            } else {
+                                echo "<br>No se ha podido mover el archivo: " . $_FILES["archivo"]["name"][$i];
+                            }
+                        } else {
+                            echo "<br>No se ha podido crear la carpeta: up/" . $user;
+                        }
+                    } else {
+                        echo "<br>" . $_FILES["archivo"]["name"][$i] . " - NO es imagen png";
+                    }
+                }
+            } else {
+               // echo "<br>No se ha subido ninguna imagen";
             }
-        }
+            
+             function comparacion($imgcomparar) {
+                 global $imgArray, $palabra, $comparador, $hash;
+                 foreach ($imgArray as $i => $valor) {
+                    //echo $imgArray[$i] ." - ".$valor." - ".$i.'<br>';
+                    $f1 = "./img/".$imgcomparar;
+                    //$f2 = "./img/a1w.png";
+                    $f2 = "./img/" . $valor;
+
+
+                    $hash = $comparador->getHash_img($f1);
+                    //echo $hash;
+                    $dif = $comparador->comparar_imgs($f1, $f2);
+
+                    /* echo "<div class = 'row'>";
+                      echo "<img class = 'col-md-4' width='400' height='300' src='" . $f1 . "'>";
+                      echo "<img class = 'col-md-4' width='400' height='300' src='" . $f2 . "'><br><br>";
+                      echo "</div>";
+                      echo "<b>Diferencias</b> " . $dif . "%<br>";
+                      echo "<b>Similitudes</b> " . (100 - $dif) . "%<br>"; */
+                    if ((100 - $dif) >= 50) {
+                        $palabra .= $i;
+                        break;
+                    }
+                }
+            }
+            
             ?>
-        <div class="row" style="margin-top: 20px;">
-            <div class="container">
-                <div class="row">
-                    <h3 class="col-md-5">Captura</h3>
-                    <div class="col-md-1"></div>
-                    <h3 class="col-md-5">Traducción</h3>
-                </div>
-                
-                <div class="col-md-5 translateboxes">
-                    <div style="margin-left: 10%;"> 
-                        <video class="center" id="video" width="300" height="300" autoplay></video>
-                        <br>
-                        <button  class="btn btn-info"id="btnCaptura">Capturar</button>
-                        <br>
-                        <br>
-                        <canvas id="canvas" width="300" height="300"></canvas>
-                        <br>
-                        <div id="resultado"></div>
-                        
+            <div class="container translateboxes">
+                <h4>Cargar Imágenes</h4>
+                <form action="<?php echo $_SERVER["PHP_SELF"] ?>" method="post" enctype="multipart/form-data" name="inscripcion">
+                    <input type="file" name="archivo[]" multiple="multiple">
+                    <input type="submit" value="Enviar"  class="trig btn btn-info">
+                 </form> 
+                <br>
+            </div>
+            
+
+            <div class="row" style="margin-top: 20px;">
+                <div class="container">
+                    <div class="row">
+                        <h3 class="col-md-5">Captura</h3>
+                        <div class="col-md-1"></div>
+                        <h3 class="col-md-5">Traducción</h3>
                     </div>
-                   
-                </div>
-                
-                <div class="col-md-1"></div>
-               
-                <div class="col-md-5 translateboxes" style="height: auto">
-                    <?php                                
-                                echo '<p>'.$palabra.'</p>';
+
+                    <div class="col-md-5 translateboxes">
+                        <div style="margin-left: 10%;"> 
+                            <video class="center" id="video" width="300" height="300" autoplay></video>
+                            <br>
+                            <button  class="btn btn-info"id="btnCaptura">Capturar</button>
+                            <br>
+                            <br>
+                            <canvas id="canvas" width="300" height="300"></canvas>
+                            <br>
+                            <div id="resultado"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-1"></div>
+
+                    <div class="col-md-5 translateboxes" style="height: auto">
+                    <?php
+                    echo '<p>' . $palabra . '</p>';
                     ?>
+                    </div>
                 </div>
             </div>
         </div>
-        </div>
     </body>
-<html>
+    <html>

@@ -13,7 +13,9 @@ window.ReImg = {
         var downloadImage = function(data, filename) {
             var a = document.createElement('a');
             a.href = data;
+            alert(a.href);
             a.download = filename;
+            alert(a.download);
             document.body.appendChild(a);
             a.click();
         };

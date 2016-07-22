@@ -1,22 +1,41 @@
 window.addEventListener("DOMContentLoaded", function () {
-	// Grab elements, create settings, etc.
-	var canvas = document.getElementById("canvas"),
-		context = canvas.getContext("2d"),
-		video = document.getElementById("video"),
-		videoObj = { "video": true },
-		errBack = function (error) {
-			console.log("Video capture error: ", error.code); 
-		};
+    // Grab elements, create settings, etc.
+    var canvas = document.getElementById("canvas"),
+        context = canvas.getContext("2d"),
+        video = document.getElementById("video"),
+        videoObj = {"video": true},
+        errBack = function (error) {
+            console.log("Video capture error: ", error.code);
+        };
 
-    document.getElementById("btnCaptura").addEventListener("click", function() {
-	context.drawImage(video, 0, 0, 300, 300);
-    //var image = new Image();
-    //image.src = canvas.toDataURL("image/png");
-    
-    
-    
-    var enviar = ReImg.fromCanvas(canvas).toBase64(); // Convertir a base 64
-	
+    document.getElementById("btnCaptura").addEventListener("click", function () {
+        context.drawImage(video, 0, 0, 300, 300);
+        //var image = new Image();
+        //image.src = canvas.toDataURL("image/png");
+
+        /*var canvas = document.getElementById("canvas");
+        var str = canvas.toDataURL('image/png');
+        
+        //alert(dataURL);
+        if (str.length === 0) { 
+         document.getElementById("txtHint").innerHTML = "";
+         return;
+        } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                document.getElementById("txtHint").innerHTML = xmlhttp.responseText;
+            }
+        };
+        xmlhttp.open("GET", "analize.php?q=" + str, true);
+        xmlhttp.send();
+        
+        }*/
+        ReImg.fromCanvas(canvas).downloadPng();
+
+/*
+    var enviar =canvas.toDataURL('image/png');// ReImg.fromCanvas(canvas).toBase64(); // Convertir a base 64
+  
     var array = new Array();
     array[0]= enviar;
     var msg = JSON.encode(array);
@@ -30,9 +49,9 @@ window.addEventListener("DOMContentLoaded", function () {
     onFailure: function(){
       $('resultado').set("html", "fallo en la conexión Ajax");
     }
-    });
+    })
     mensaje.send();
-    //ReImg.fromCanvas(canvas).downloadPng();
+    //ReImg.fromCanvas(canvas).downloadPng();*/
     });
     
 	// Put video listeners into place
@@ -54,4 +73,17 @@ window.addEventListener("DOMContentLoaded", function () {
 		}, errBack);
 	}
 }, false);
-
+/*
+function toDataUrl(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.responseType = 'blob';
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      callback(reader.result);
+    }
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.send();
+}*/
